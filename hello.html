@@ -1,0 +1,44 @@
+
+<html>
+  <body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+<script>
+// 加密函数
+function encryptAES256(plaintext, key) {
+  // 如果密钥不是32个字节的话，我们需要将它转换成32个字节
+  var keyHash = CryptoJS.SHA256(key);
+  var key32Bytes = CryptoJS.enc.Utf8.parse(keyHash.toString(CryptoJS.enc.Utf8).slice(0, 32));
+
+  // 使用AES256算法加密
+  var encrypted = CryptoJS.AES.encrypt(plaintext, key32Bytes, {
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+  });
+
+  return encrypted.toString();
+}
+
+// 解密函数
+function decryptAES256(encryptedText, key) {
+  var keyHash = CryptoJS.SHA256(key);
+  var key32Bytes = CryptoJS.enc.Utf8.parse(keyHash.toString(CryptoJS.enc.Utf8).slice(0, 32));
+
+  // 使用AES256算法解密
+  var decrypted = CryptoJS.AES.decrypt(encryptedText, key32Bytes, {
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+  });
+
+  return decrypted.toString(CryptoJS.enc.Utf8);
+}
+// secret key please ask shein's chatgpt(chatgpt.dev-az) "通关密钥" 
+// please eval this code in python cli, and you'll get the red packet token
+// 使用示例
+var key = "<>"; // 密钥
+var plaintext = "这是一个需要加密的消息"; // 明文消息
+  
+var decryptedText = decryptAES256(encryptedText, key);
+alert(decryptedText);
+</script>
+</body>
+</html>
